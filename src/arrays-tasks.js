@@ -335,8 +335,12 @@ function calculateBalance(arr) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  return new Array(Math.ceil(arr.length / chunkSize))
+    .fill(0)
+    .map((_, index) =>
+      arr.slice(index * chunkSize, index * chunkSize + chunkSize)
+    );
 }
 
 /**
@@ -495,8 +499,20 @@ function findCommonElements(arr1, arr2) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => longest is [3, 10] and [1, 20] => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => longest is [7, 40, 80] => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  const result = [];
+  let counter = 0;
+  nums.reduce((acc, item, index) => {
+    if (acc < item) {
+      counter += 1;
+    }
+    if (acc > item || index === nums.length - 1) {
+      result.push(counter);
+      counter = 1;
+    }
+    return item;
+  }, 0);
+  return result.sort((a, b) => a - b)[result.length - 1];
 }
 
 /**
@@ -513,8 +529,8 @@ function findLongestIncreasingSubsequence(/* nums */) {
  *  propagateItemsByPositionIndex([ 'a', 'b', 'c', null ]) => [ 'a', 'b', 'b', 'c', 'c', 'c',  null, null, null, null ]
  *  propagateItemsByPositionIndex([ 1,2,3,4,5 ]) => [ 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  return arr.map((item, index) => [...Array(index + 1)].fill(item)).flat();
 }
 
 /**
@@ -530,8 +546,10 @@ function propagateItemsByPositionIndex(/* arr */) {
  *    shiftArray(['a', 'b', 'c', 'd'], -1) => ['b', 'c', 'd', 'a']
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
-function shiftArray(/* arr, n */) {
-  throw new Error('Not implemented');
+function shiftArray(arr, n) {
+  return n > 0
+    ? arr.slice(-n).concat(arr.slice(0, arr.length - n))
+    : arr.splice(-n).concat(arr.slice(0, -n));
 }
 
 /**
@@ -547,8 +565,20 @@ function shiftArray(/* arr, n */) {
  *   sortDigitNamesByNumericOrder([ 'nine','eight','nine','eight' ]) => [ 'eight','eight','nine','nine']
  *   sortDigitNamesByNumericOrder([ 'one','one','one','zero' ]) => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const stringnums = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+  return arr.sort((a, b) => stringnums.indexOf(a) - stringnums.indexOf(b));
 }
 
 /**
@@ -570,8 +600,14 @@ function sortDigitNamesByNumericOrder(/* arr */) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  return arr.length % 2 === 0
+    ? [...arr.slice(arr.length / 2), ...arr.slice(0, arr.length / 2)]
+    : [
+        ...arr.slice(Math.ceil(arr.length / 2)),
+        ...arr.slice(Math.floor(arr.length / 2), Math.ceil(arr.length / 2)),
+        ...arr.slice(0, arr.length / 2),
+      ];
 }
 
 module.exports = {
